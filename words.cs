@@ -1,22 +1,18 @@
  namespace WordlessAPI
  {
-     public record GetWordResponse( string word );
-     public record WordExistsResponse( bool exists );
-     public record QueryMatchCountResponse( int count );
-
      public static class Words
      {
-          public static WordExistsResponse WordExists( string word )
+          public static bool WordExists( string word )
           {
-               return new WordExistsResponse( 0 <= Array.BinarySearch( wordList, 0, wordList.Length, word.ToLower() ) );
+               return 0 <= Array.BinarySearch( wordList, 0, wordList.Length, word.ToLower() );
           }
 
-          public static GetWordResponse RandomWord()
+          public static string RandomWord()
           {
                return TodaysWord( -1 );
           }
 
-          public static GetWordResponse TodaysWord( int dayIndex )
+          public static string TodaysWord( int dayIndex )
           {      
                float r;
                
@@ -42,10 +38,10 @@
                return GetWordByIndex( r );
           }
 
-          private static GetWordResponse GetWordByIndex( float randomNumber )
+          private static string GetWordByIndex( float randomNumber )
           {
                int index = (int) ( randomNumber * wordList.Length );
-               return new GetWordResponse( wordList[ index ] );
+               return wordList[ index ];
           }
 
           private static bool MatchesYellow( string testWord, string guessChar, int charIndex )
@@ -96,7 +92,7 @@
                return true;
           }
 
-          public static QueryMatchCountResponse CountMatches( IEnumerable<string> candidates, string answer, IEnumerable<string> guesses )
+          public static int CountMatches( IEnumerable<string> candidates, string answer, IEnumerable<string> guesses )
           {
                int matchCount = 0;
 
@@ -118,7 +114,7 @@
                     }
                }
 
-               return new QueryMatchCountResponse( matchCount );
+               return  matchCount;
           }
 
           public static string[] wordList = {

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using WordlessAPI;
@@ -14,32 +15,39 @@ namespace WordlessAPI
           {
           }
 
-          [HttpGet("/getword/{daysago}")]
-          public GetWordResponse GetWord( int daysago )
+          [HttpGet("/healthcheck")]
+          public IActionResult HealthCheck()
           { 
                SetApiVersionHeader();
-               return Words.TodaysWord( daysago );
+               return Ok( new HealthCheckResponse( true ) );
+          }
+
+          [HttpGet("/getword/{daysago}")]
+          public IActionResult GetWord( int daysago )
+          { 
+               SetApiVersionHeader();
+               return Ok( new GetWordResponse( Words.TodaysWord( daysago ) ) );
           }
 
           [HttpGet("/randomword")]
           public IActionResult RandomWord()
           { 
                SetApiVersionHeader();
-               return Ok( Words.RandomWord() );
+               return Ok( new GetWordResponse( Words.RandomWord() ) );
           }
 
           [HttpGet("/checkword/{word}")]
           public IActionResult CheckWord( string word )
           { 
                SetApiVersionHeader();
-               return Ok( Words.WordExists( word ) );
+               return Ok( new WordExistsResponse( Words.WordExists( word ) ) );
           }
 
           [HttpPost("/querymatchcount")]
           public IActionResult QueryMatchCount( [FromBody] QueryMatchCountRequest request )
           { 
                SetApiVersionHeader();
-               return Ok( Words.CountMatches( Words.wordList, request.answer, request.guesses ) );
+               return Ok( new QueryMatchCountResponse( Words.CountMatches( Words.wordList, request.answer, request.guesses ) ) );
           }
 
           private void SetApiVersionHeader( )
@@ -49,7 +57,4 @@ namespace WordlessAPI
                HttpContext.Response.Headers.Add( HTTP_VER_HEADER, verHeaderValue );
           }
      }
-
-     public record QueryMatchCountRequest( string answer, string[] guesses );
-
 }
