@@ -47,7 +47,7 @@ namespace WordlessAPI
           public IActionResult QueryMatchCount( [FromBody] QueryMatchCountRequest request )
           { 
                SetApiVersionHeader();
-               return Ok( new QueryMatchCountResponse( Words.CountMatches( Words.wordList, request.answer, request.guesses ) ) );
+               return Ok( new QueryMatchCountResponse( Words.CountMatches( Words.wordList, request.Answer, request.Guesses ) ) );
           }
 
           private void SetApiVersionHeader( )
