@@ -54,7 +54,7 @@ namespace WordlessAPI
           {
                Version? apiVersion = Assembly.GetExecutingAssembly().GetName().Version;
                string verHeaderValue = apiVersion?.ToString() ?? "unknown";
-               HttpContext.Response.Headers.Add( HTTP_VER_HEADER, verHeaderValue );
+               HttpContext.Response.Headers[HTTP_VER_HEADER] = verHeaderValue;
           }
      }
 }

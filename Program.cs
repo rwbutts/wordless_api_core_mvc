@@ -22,10 +22,12 @@ app.UseSwaggerUI();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+#pragma warning disable ASP0014 // Suggest using top level route registrations
 app.UseEndpoints( endpoints => 
      {
           endpoints.MapControllers();
      });
+#pragma warning restore ASP0014 // Suggest using top level route registrations
 
 app.Run();
 
